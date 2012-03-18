@@ -12,12 +12,17 @@ class MoviesController < ApplicationController
 
     @hilite_col = nil
 
+    if (@selected_ratings == nil)
+      logger.debug("RAJA: allocating selected_ratings array")
+      @selected_ratings = Array.new
+    end
+
     find_args = Hash.new
 
     if params.has_key?(:ratings)
-      selected_ratings = params[:ratings].keys
-      logger.debug("selected ratings: #{selected_ratings}")
-      find_args[:conditions]=Hash[:rating => selected_ratings]
+      @selected_ratings = params[:ratings].keys
+      logger.debug("selected ratings: #{@selected_ratings}")
+      find_args[:conditions]=Hash[:rating => @selected_ratings]
     end
 
     if params.has_key?(:sort)
