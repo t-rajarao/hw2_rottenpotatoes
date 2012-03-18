@@ -7,6 +7,7 @@ class MoviesController < ApplicationController
   end
 
   def index
+    logger.debug("RAJA: #{params}")
     if params.has_key?(:sort)
       @hilite_col = params[:sort]
       @movies = Movie.order(params[:sort]).all
