@@ -7,16 +7,27 @@ class MoviesController < ApplicationController
   end
 
   def index
-    logger.debug("RAJA: #{params}")
+    @all_ratings = Movie.all_ratings
+    logger.debug("all ratings: #{@all_ratings}")
+
+    @hilite_col = nil
+
+    find_args = Hash.new
+
+    if params.has_key?(:ratings)
+      selected_ratings = params[:ratings].keys
+      logger.debug("selected ratings: #{selected_ratings}")
+      find_args[:conditions]=Hash[:rating => selected_ratings]
+    end
+
     if params.has_key?(:sort)
       @hilite_col = params[:sort]
-      @movies = Movie.order(params[:sort]).all
-    else
-      @hilite_col = nil
-      @movies = Movie.all
+      find_args[:order]=params[:sort]
     end
-    @all_ratings = Movie.all_ratings
-    logger.debug("RAJA: #{@all_ratings}")
+
+    logger.debug("find args: #{find_args}")
+    @movies = Movie.find(:all, find_args)
+
   end
 
   def new
