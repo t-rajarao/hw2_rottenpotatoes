@@ -14,6 +14,8 @@ class MoviesController < ApplicationController
       @hilite_col = nil
       @movies = Movie.all
     end
+    @all_ratings = Movie.all_ratings
+    logger.debug("RAJA: #{@all_ratings}")
   end
 
   def new
